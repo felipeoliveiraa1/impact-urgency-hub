@@ -12,9 +12,9 @@ export const MatrizEisenhower = ({
   const cellDensity = useMemo(() => {
     const density = new Map<string, CellDensity>();
 
-    // Create 10x10 grid
-    for (let linha = 1; linha <= 10; linha++) {
-      for (let coluna = 1; coluna <= 10; coluna++) {
+    // Create 11x11 grid
+    for (let linha = 1; linha <= 11; linha++) {
+      for (let coluna = 1; coluna <= 11; coluna++) {
         density.set(`${linha}-${coluna}`, {
           linha,
           coluna,
@@ -24,8 +24,8 @@ export const MatrizEisenhower = ({
       }
     }
 
-    // Map database values (1-12) to grid values (1-10)
-    const mapToGrid = (value: number) => Math.min(Math.ceil(value * 10 / 12), 10);
+    // Map database values (1-12) to grid values (1-11)
+    const mapToGrid = (value: number) => Math.min(Math.ceil(value * 11 / 12), 11);
     tarefas.forEach(tarefa => {
       if (tarefa.linha && tarefa.coluna) {
         const mappedLinha = mapToGrid(tarefa.linha);
@@ -42,11 +42,11 @@ export const MatrizEisenhower = ({
   }, [tarefas]);
   const getQuadrant = (linha: number, coluna: number) => {
     // Q1: Upper right (Urgent & Important) - Orange
-    if (linha > 5 && coluna > 5) return 'fazer_agora';
+    if (linha > 6 && coluna > 6) return 'fazer_agora';
     // Q2: Upper left (Not Urgent & Important) - Light gray
-    if (linha > 5 && coluna <= 5) return 'agendar';
+    if (linha > 6 && coluna <= 6) return 'agendar';
     // Q3: Lower right (Urgent & Not Important) - Light gray
-    if (linha <= 5 && coluna > 5) return 'delegar';
+    if (linha <= 6 && coluna > 6) return 'delegar';
     // Q4: Lower left (Not Urgent & Not Important) - Light gray
     return 'eliminar';
   };
@@ -67,21 +67,22 @@ export const MatrizEisenhower = ({
             <p className="text-xl font-semibold">Importante</p>
           </div>
 
-          {/* Grid da matriz 10x10 */}
+          {/* Grid da matriz 11x11 */}
           <div className="relative border-[6px] border-black bg-white p-0 aspect-square max-w-[800px] mx-auto">
-            <div className="grid grid-cols-10 gap-0 h-full">
+            <div className="grid grid-cols-11 gap-0 h-full">
               {Array.from({
-              length: 10
+              length: 11
             }, (_, linhaIdx) => {
-              const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
+              const linha = 11 - linhaIdx; // Inverte para urgência crescente de baixo para cima
               return Array.from({
-                length: 10
+                length: 11
               }, (_, colunaIdx) => {
                 const coluna = colunaIdx + 1;
                 const key = `${linha}-${coluna}`;
                 const cell = cellDensity.get(key)!;
                 const quadrant = getQuadrant(linha, coluna);
-                return <CelulaMatriz key={key} cell={cell} quadrant={quadrant} onClick={() => setSelectedCell(cell)} isOnDivider={linha === 6 || coluna === 6} />;
+                const isLinhaColuna6 = linha === 6 || coluna === 6;
+                return <CelulaMatriz key={key} cell={cell} quadrant={quadrant} onClick={() => setSelectedCell(cell)} isOnDivider={isLinhaColuna6} />;
               });
             })}
             </div>
