@@ -24,13 +24,10 @@ export const MatrizEisenhower = ({
       }
     }
 
-    // Map database values (1-12) to grid values (1-11)
-    const mapToGrid = (value: number) => Math.min(Math.ceil(value * 11 / 12), 11);
+    // Database now returns values 1-11 directly, no mapping needed
     tarefas.forEach(tarefa => {
       if (tarefa.linha && tarefa.coluna) {
-        const mappedLinha = mapToGrid(tarefa.linha);
-        const mappedColuna = mapToGrid(tarefa.coluna);
-        const key = `${mappedLinha}-${mappedColuna}`;
+        const key = `${tarefa.linha}-${tarefa.coluna}`;
         const cell = density.get(key);
         if (cell) {
           cell.count++;
