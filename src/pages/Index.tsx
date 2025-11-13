@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTarefas } from '@/hooks/useTarefas';
 import { MatrizEisenhower } from '@/components/MatrizEisenhower';
 import { DashboardEstatisticas } from '@/components/DashboardEstatisticas';
-import { LegendaQuadrantes } from '@/components/LegendaQuadrantes';
 import { FormularioTarefa } from '@/components/FormularioTarefa';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -13,21 +12,20 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-lg text-muted-foreground">Carregando matriz...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-[1400px] mx-auto space-y-8">
-        {/* Header */}
+    <div className="min-h-screen bg-background p-4 md:p-8">
+      <div className="max-w-[1400px] mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Matriz de Eisenhower</h1>
+            <h1 className="text-4xl font-bold">Matriz de Eisenhower</h1>
             <p className="text-muted-foreground mt-1">
-              Sistema de priorização 12×12
+              Sistema avançado de priorização de tarefas
             </p>
           </div>
           <Button onClick={() => setShowForm(true)} size="lg">
@@ -36,14 +34,8 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Stats Cards */}
         <DashboardEstatisticas tarefas={tarefas} />
-
-        {/* Matrix */}
         <MatrizEisenhower tarefas={tarefas} />
-
-        {/* Legend */}
-        <LegendaQuadrantes />
       </div>
 
       <FormularioTarefa

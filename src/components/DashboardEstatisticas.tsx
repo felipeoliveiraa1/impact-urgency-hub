@@ -24,12 +24,11 @@ export const DashboardEstatisticas = ({ tarefas }: DashboardEstatisticasProps) =
   }, [tarefas]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-      {/* Fazer Agora - Red */}
-      <Card className="bg-red-50 border border-gray-200 shadow-sm">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <Card className="bg-fazer-agora/10 border-fazer-agora">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Fazer Agora</CardTitle>
-          <AlertCircle className="h-4 w-4 text-red-500" />
+          <AlertCircle className="h-4 w-4 text-fazer-agora" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.byCategory.fazer_agora}</div>
@@ -39,11 +38,10 @@ export const DashboardEstatisticas = ({ tarefas }: DashboardEstatisticasProps) =
         </CardContent>
       </Card>
 
-      {/* Agendar - Green */}
-      <Card className="bg-green-50 border border-gray-200 shadow-sm">
+      <Card className="bg-agendar/10 border-agendar">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Agendar</CardTitle>
-          <Calendar className="h-4 w-4 text-green-600" />
+          <Calendar className="h-4 w-4 text-agendar" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.byCategory.agendar}</div>
@@ -53,11 +51,10 @@ export const DashboardEstatisticas = ({ tarefas }: DashboardEstatisticasProps) =
         </CardContent>
       </Card>
 
-      {/* Delegar - Yellow */}
-      <Card className="bg-yellow-50 border border-gray-200 shadow-sm">
+      <Card className="bg-delegar/10 border-delegar">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Delegar</CardTitle>
-          <Users className="h-4 w-4 text-yellow-600" />
+          <Users className="h-4 w-4 text-delegar" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.byCategory.delegar}</div>
@@ -67,11 +64,10 @@ export const DashboardEstatisticas = ({ tarefas }: DashboardEstatisticasProps) =
         </CardContent>
       </Card>
 
-      {/* Eliminar - Gray */}
-      <Card className="bg-gray-50 border border-gray-200 shadow-sm">
+      <Card className="bg-eliminar/10 border-eliminar">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Eliminar</CardTitle>
-          <XCircle className="h-4 w-4 text-gray-500" />
+          <XCircle className="h-4 w-4 text-eliminar" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.byCategory.eliminar}</div>
@@ -81,8 +77,7 @@ export const DashboardEstatisticas = ({ tarefas }: DashboardEstatisticasProps) =
         </CardContent>
       </Card>
 
-      {/* Prioridade Média - White */}
-      <Card className="bg-white border border-gray-200 shadow-sm">
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Prioridade Média</CardTitle>
         </CardHeader>
