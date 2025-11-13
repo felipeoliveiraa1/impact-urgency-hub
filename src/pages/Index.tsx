@@ -19,12 +19,7 @@ const Index = () => {
   return <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-[1400px] mx-auto space-y-3">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold">Matriz Nascimento          </h1>
-            <p className="text-muted-foreground mt-1">
-              Sistema avançado de priorização de tarefas
-            </p>
-          </div>
+          
           
         </div>
 
