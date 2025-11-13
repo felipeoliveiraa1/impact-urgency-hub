@@ -98,10 +98,10 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
             </div>
             
             {/* Linha divisória horizontal - na linha 5 (divide em 50%) */}
-            <div className="absolute left-0 right-0 h-[3px] bg-gray-600" style={{ top: '50%' }} />
+            <div className="absolute left-0 right-0 h-[6px] bg-black z-20" style={{ top: '50%', transform: 'translateY(-50%)' }} />
             
             {/* Linha divisória vertical - na coluna 5 (divide em 50%) */}
-            <div className="absolute top-0 bottom-0 w-[3px] bg-gray-600" style={{ left: '50%' }} />
+            <div className="absolute top-0 bottom-0 w-[6px] bg-black z-20" style={{ left: '50%', transform: 'translateX(-50%)' }} />
           </div>
 
           {/* Legenda dos quadrantes */}
