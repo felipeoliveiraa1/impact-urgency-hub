@@ -13,8 +13,8 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   const cellDensity = useMemo(() => {
     const density = new Map<string, CellDensity>();
     
-    for (let linha = 1; linha <= 10; linha++) {
-      for (let coluna = 1; coluna <= 10; coluna++) {
+    for (let linha = 1; linha <= 12; linha++) {
+      for (let coluna = 1; coluna <= 12; coluna++) {
         density.set(`${linha}-${coluna}`, {
           linha,
           coluna,
@@ -37,9 +37,9 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   }, [tarefas]);
 
   const getQuadrant = (linha: number, coluna: number) => {
-    if (linha > 6 && coluna > 6) return 'fazer_agora';
-    if (linha <= 6 && coluna > 6) return 'agendar';
-    if (linha > 6 && coluna <= 6) return 'delegar';
+    if (linha > 7 && coluna > 7) return 'fazer_agora';
+    if (linha <= 7 && coluna > 7) return 'agendar';
+    if (linha > 7 && coluna <= 7) return 'delegar';
     return 'eliminar';
   };
 
@@ -63,10 +63,10 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
 
           {/* Grid da matriz */}
           <div className="relative border-[6px] border-black bg-white p-0">
-            <div className="grid grid-cols-10 gap-0">
-              {Array.from({ length: 10 }, (_, linhaIdx) => {
-                const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
-                return Array.from({ length: 10 }, (_, colunaIdx) => {
+            <div className="grid grid-cols-12 gap-0">
+              {Array.from({ length: 12 }, (_, linhaIdx) => {
+                const linha = 12 - linhaIdx; // Inverte para urgência crescente de baixo para cima
+                return Array.from({ length: 12 }, (_, colunaIdx) => {
                   const coluna = colunaIdx + 1;
                   const key = `${linha}-${coluna}`;
                   const cell = cellDensity.get(key)!;
@@ -78,7 +78,7 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
                       cell={cell}
                       quadrant={quadrant}
                       onClick={() => setSelectedCell(cell)}
-                      isOnDivider={linha === 7 || coluna === 7}
+                      isOnDivider={linha === 8 || coluna === 8}
                     />
                   );
                 });
