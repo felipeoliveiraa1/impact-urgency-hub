@@ -52,6 +52,16 @@ export const ModalTarefas = ({
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg">{tarefa.titulo}</h3>
                   {tarefa.descricao && <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>}
+                  {tarefa.task_link && (
+                    <a 
+                      href={tarefa.task_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline mt-1 inline-block"
+                    >
+                      🔗 Abrir link da tarefa
+                    </a>
+                  )}
                 </div>
                 
               </div>
