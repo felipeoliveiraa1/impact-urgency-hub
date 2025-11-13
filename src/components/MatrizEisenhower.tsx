@@ -13,8 +13,8 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   const cellDensity = useMemo(() => {
     const density = new Map<string, CellDensity>();
     
-    for (let linha = 1; linha <= 10; linha++) {
-      for (let coluna = 1; coluna <= 10; coluna++) {
+    for (let linha = 1; linha <= 12; linha++) {
+      for (let coluna = 1; coluna <= 12; coluna++) {
         density.set(`${linha}-${coluna}`, {
           linha,
           coluna,
@@ -36,70 +36,53 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
     return density;
   }, [tarefas]);
 
-  const getQuadrant = (linha: number, coluna: number) => {
-    if (linha > 7 && coluna > 7) return 'fazer_agora';
-    if (linha <= 7 && coluna > 7) return 'agendar';
-    if (linha > 7 && coluna <= 7) return 'delegar';
-    return 'eliminar';
-  };
-
   return (
     <>
-      <div className="w-full max-w-[1200px] mx-auto p-4">
-        <div className="mb-6 text-center">
-          <h1 className="text-4xl font-bold mb-2">Matriz de Eisenhower</h1>
-          <p className="text-muted-foreground">Sistema de priorização baseado em 4 critérios</p>
-        </div>
-
-        {/* Labels dos eixos */}
+      <div className="w-full max-w-[700px] mx-auto">
+        {/* Container with labels */}
         <div className="relative">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
-            <p className="text-lg font-semibold whitespace-nowrap">Urgência (1-10) →</p>
-          </div>
-          
-          <div className="mb-2 text-center">
-            <p className="text-lg font-semibold">← Impacto (1-10) →</p>
+          {/* Top label - Importante */}
+          <div className="text-center mb-4">
+            <p className="text-lg font-bold text-foreground">Importante</p>
           </div>
 
-          {/* Grid da matriz */}
-          <div className="grid grid-cols-10 gap-1 bg-border p-2 rounded-lg">
-            {Array.from({ length: 10 }, (_, linhaIdx) => {
-              const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
-              return Array.from({ length: 10 }, (_, colunaIdx) => {
-                const coluna = colunaIdx + 1;
-                const key = `${linha}-${coluna}`;
-                const cell = cellDensity.get(key)!;
-                const quadrant = getQuadrant(linha, coluna);
+          <div className="flex items-center">
+            {/* Left label - Urgente (rotated) */}
+            <div className="relative -mr-2">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-8">
+                <p className="text-lg font-bold text-foreground whitespace-nowrap origin-center -rotate-90">
+                  Urgente
+                </p>
+              </div>
+            </div>
 
-                return (
-                  <CelulaMatriz
-                    key={key}
-                    cell={cell}
-                    quadrant={quadrant}
-                    onClick={() => setSelectedCell(cell)}
-                  />
-                );
-              });
-            })}
-          </div>
+            {/* Matrix container with thick black border */}
+            <div className="relative border-[8px] border-black bg-white">
+              {/* Grid 12x12 */}
+              <div className="grid grid-cols-12 gap-0">
+                {Array.from({ length: 12 }, (_, rowIdx) => {
+                  const linha = 12 - rowIdx; // Inverte para urgência crescente de baixo para cima
+                  return Array.from({ length: 12 }, (_, colIdx) => {
+                    const coluna = colIdx + 1;
+                    const key = `${linha}-${coluna}`;
+                    const cell = cellDensity.get(key)!;
 
-          {/* Legenda dos quadrantes */}
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="p-4 rounded-lg bg-fazer-agora/20 border-2 border-fazer-agora">
-              <h3 className="font-bold text-lg mb-1">Fazer Agora</h3>
-              <p className="text-sm text-muted-foreground">Alto impacto + Alta urgência</p>
-            </div>
-            <div className="p-4 rounded-lg bg-agendar/20 border-2 border-agendar">
-              <h3 className="font-bold text-lg mb-1">Agendar</h3>
-              <p className="text-sm text-muted-foreground">Alto impacto + Baixa urgência</p>
-            </div>
-            <div className="p-4 rounded-lg bg-delegar/20 border-2 border-delegar">
-              <h3 className="font-bold text-lg mb-1">Delegar</h3>
-              <p className="text-sm text-muted-foreground">Baixo impacto + Alta urgência</p>
-            </div>
-            <div className="p-4 rounded-lg bg-eliminar/20 border-2 border-eliminar">
-              <h3 className="font-bold text-lg mb-1">Eliminar</h3>
-              <p className="text-sm text-muted-foreground">Baixo impacto + Baixa urgência</p>
+                    return (
+                      <CelulaMatriz
+                        key={key}
+                        cell={cell}
+                        onClick={() => cell.count > 0 && setSelectedCell(cell)}
+                      />
+                    );
+                  });
+                })}
+              </div>
+
+              {/* Reference lines - horizontal (splits urgency) */}
+              <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-muted-foreground/30 pointer-events-none" />
+              
+              {/* Reference lines - vertical (splits importance) */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-muted-foreground/30 pointer-events-none" />
             </div>
           </div>
         </div>
