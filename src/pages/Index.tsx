@@ -1,12 +1,47 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { useTarefas } from '@/hooks/useTarefas';
+import { MatrizEisenhower } from '@/components/MatrizEisenhower';
+import { DashboardEstatisticas } from '@/components/DashboardEstatisticas';
+import { FormularioTarefa } from '@/components/FormularioTarefa';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+  const { tarefas, isLoading } = useTarefas();
+  const [showForm, setShowForm] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-muted-foreground">Carregando matriz...</p>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background p-4 md:p-8">
+      <div className="max-w-[1400px] mx-auto space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold">Matriz de Eisenhower</h1>
+            <p className="text-muted-foreground mt-1">
+              Sistema avançado de priorização de tarefas
+            </p>
+          </div>
+          <Button onClick={() => setShowForm(true)} size="lg">
+            <Plus className="mr-2 h-5 w-5" />
+            Nova Tarefa
+          </Button>
+        </div>
+
+        <DashboardEstatisticas tarefas={tarefas} />
+        <MatrizEisenhower tarefas={tarefas} />
+      </div>
+
+      <FormularioTarefa
+        open={showForm}
+        onClose={() => setShowForm(false)}
+      />
     </div>
   );
 };

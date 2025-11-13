@@ -57,6 +57,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "fazer-agora": "hsl(var(--fazer-agora))",
+        agendar: "hsl(var(--agendar))",
+        delegar: "hsl(var(--delegar))",
+        eliminar: "hsl(var(--eliminar))",
       },
       borderRadius: {
         lg: "var(--radius)",
