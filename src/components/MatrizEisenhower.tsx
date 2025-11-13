@@ -2,44 +2,32 @@ import { useMemo, useState } from 'react';
 import { Tarefa, CellDensity } from '@/types/tarefa';
 import { CelulaMatriz } from './CelulaMatriz';
 import { ModalTarefas } from './ModalTarefas';
-
 interface MatrizEisenhowerProps {
   tarefas: Tarefa[];
 }
-
-export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
+export const MatrizEisenhower = ({
+  tarefas
+}: MatrizEisenhowerProps) => {
   const [selectedCell, setSelectedCell] = useState<CellDensity | null>(null);
-
   const cellDensity = useMemo(() => {
     const density = new Map<string, CellDensity>();
-    
-    // Create 10x10 grid
-    for (let linha = 1; linha <= 10; linha++) {
-      for (let coluna = 1; coluna <= 10; coluna++) {
+
+    // Create 11x11 grid
+    for (let linha = 1; linha <= 11; linha++) {
+      for (let coluna = 1; coluna <= 11; coluna++) {
         density.set(`${linha}-${coluna}`, {
           linha,
           coluna,
           count: 0,
-          tarefas: [],
+          tarefas: []
         });
       }
     }
 
-    // Map database values (1-12 skipping 6) to grid values (1-10)
-    const mapToGrid = (value: number) => {
-      if (value <= 5) return value;
-      if (value === 7) return 6;
-      if (value === 8) return 7;
-      if (value === 9) return 8;
-      if (value === 10) return 9;
-      return 10; // para valores 11 e 12
-    };
-
+    // Database now returns values 1-11 directly, no mapping needed
     tarefas.forEach(tarefa => {
       if (tarefa.linha && tarefa.coluna) {
-        const mappedLinha = mapToGrid(tarefa.linha);
-        const mappedColuna = mapToGrid(tarefa.coluna);
-        const key = `${mappedLinha}-${mappedColuna}`;
+        const key = `${tarefa.linha}-${tarefa.coluna}`;
         const cell = density.get(key);
         if (cell) {
           cell.count++;
@@ -47,32 +35,28 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
         }
       }
     });
-
     return density;
   }, [tarefas]);
-
   const getQuadrant = (linha: number, coluna: number) => {
     // Q1: Upper right (Urgent & Important) - Orange
-    if (linha > 5 && coluna > 5) return 'fazer_agora';
+    if (linha > 6 && coluna > 6) return 'fazer_agora';
     // Q2: Upper left (Not Urgent & Important) - Light gray
-    if (linha > 5 && coluna <= 5) return 'agendar';
+    if (linha > 6 && coluna <= 6) return 'agendar';
     // Q3: Lower right (Urgent & Not Important) - Light gray
-    if (linha <= 5 && coluna > 5) return 'delegar';
+    if (linha <= 6 && coluna > 6) return 'delegar';
     // Q4: Lower left (Not Urgent & Not Important) - Light gray
     return 'eliminar';
   };
-
-  return (
-    <>
+  return <>
       <div className="w-full max-w-[1200px] mx-auto p-4">
         <div className="mb-6 text-center">
-          <h1 className="text-4xl font-bold mb-2">Matriz de Eisenhower</h1>
+          
           <p className="text-muted-foreground">Sistema de priorização baseado em 4 critérios</p>
         </div>
 
         {/* Labels dos eixos */}
         <div className="relative">
-          <div className="absolute -left-24 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
+          <div className="absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
             <p className="text-xl font-semibold whitespace-nowrap">Urgente</p>
           </div>
           
@@ -80,35 +64,31 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
             <p className="text-xl font-semibold">Importante</p>
           </div>
 
-          {/* Grid da matriz 10x10 */}
+          {/* Grid da matriz 11x11 */}
           <div className="relative border-[6px] border-black bg-white p-0 aspect-square max-w-[800px] mx-auto">
-            <div className="grid grid-cols-10 gap-0 h-full">
-              {Array.from({ length: 10 }, (_, linhaIdx) => {
-                const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
-                return Array.from({ length: 10 }, (_, colunaIdx) => {
-                  const coluna = colunaIdx + 1;
-                  const key = `${linha}-${coluna}`;
-                  const cell = cellDensity.get(key)!;
-                  const quadrant = getQuadrant(linha, coluna);
-
-                  return (
-                    <CelulaMatriz
-                      key={key}
-                      cell={cell}
-                      quadrant={quadrant}
-                      onClick={() => setSelectedCell(cell)}
-                      isOnDivider={linha === 6 || coluna === 6}
-                    />
-                  );
-                });
-              })}
+            <div className="grid grid-cols-11 gap-0 h-full">
+              {Array.from({
+              length: 11
+            }, (_, linhaIdx) => {
+              const linha = 11 - linhaIdx; // Inverte para urgência crescente de baixo para cima
+              return Array.from({
+                length: 11
+              }, (_, colunaIdx) => {
+                const coluna = colunaIdx + 1;
+                const key = `${linha}-${coluna}`;
+                const cell = cellDensity.get(key)!;
+                const quadrant = getQuadrant(linha, coluna);
+                const isLinhaColuna6 = linha === 6 || coluna === 6;
+                return <CelulaMatriz key={key} cell={cell} quadrant={quadrant} onClick={() => setSelectedCell(cell)} isOnDivider={isLinhaColuna6} />;
+              });
+            })}
             </div>
             
             {/* Linha divisória horizontal - na linha 5 (divide em 50%) */}
-            <div className="absolute left-0 right-0 h-[6px] bg-black z-20" style={{ top: '50%', transform: 'translateY(-50%)' }} />
+            
             
             {/* Linha divisória vertical - na coluna 5 (divide em 50%) */}
-            <div className="absolute top-0 bottom-0 w-[6px] bg-black z-20" style={{ left: '50%', transform: 'translateX(-50%)' }} />
+            
           </div>
 
           {/* Legenda dos quadrantes */}
@@ -133,13 +113,6 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
         </div>
       </div>
 
-      {selectedCell && (
-        <ModalTarefas
-          cell={selectedCell}
-          open={!!selectedCell}
-          onClose={() => setSelectedCell(null)}
-        />
-      )}
-    </>
-  );
+      {selectedCell && <ModalTarefas cell={selectedCell} open={!!selectedCell} onClose={() => setSelectedCell(null)} />}
+    </>;
 };

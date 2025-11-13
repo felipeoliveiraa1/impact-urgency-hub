@@ -19,6 +19,7 @@ export const FormularioTarefa = ({ open, onClose, tarefa }: FormularioTarefaProp
   const [formData, setFormData] = useState({
     titulo: tarefa?.titulo || '',
     descricao: tarefa?.descricao || '',
+    task_link: tarefa?.task_link || '',
     impacto: tarefa?.impacto || 5,
     urgencia: tarefa?.urgencia || 5,
     complexidade: tarefa?.complexidade || 5,
@@ -62,6 +63,17 @@ export const FormularioTarefa = ({ open, onClose, tarefa }: FormularioTarefaProp
               value={formData.descricao}
               onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="task_link">Link da Tarefa</Label>
+            <Input
+              id="task_link"
+              type="url"
+              placeholder="https://..."
+              value={formData.task_link}
+              onChange={(e) => setFormData({ ...formData, task_link: e.target.value })}
             />
           </div>
 
