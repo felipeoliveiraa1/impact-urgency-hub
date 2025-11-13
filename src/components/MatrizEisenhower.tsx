@@ -50,7 +50,7 @@ export const MatrizEisenhower = ({
   return <>
       <div className="w-full max-w-[1200px] mx-auto p-4">
         <div className="mb-6 text-center">
-          <h1 className="text-4xl font-bold mb-2">Matriz TN    </h1>
+          
           <p className="text-muted-foreground">Sistema de priorização baseado em 4 critérios</p>
         </div>
 
