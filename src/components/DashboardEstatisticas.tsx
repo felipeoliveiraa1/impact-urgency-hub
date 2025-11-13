@@ -1,13 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Tarefa, TaskCategory } from '@/types/tarefa';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Calendar, Users, XCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, Calendar, Users, XCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/hooks/use-toast';
 interface DashboardEstatisticasProps {
   tarefas: Tarefa[];
 }
@@ -15,34 +11,6 @@ export const DashboardEstatisticas = ({
   tarefas
 }: DashboardEstatisticasProps) => {
   const [selectedCategory, setSelectedCategory] = useState<TaskCategory | null>(null);
-  const [isRecalculating, setIsRecalculating] = useState(false);
-  const queryClient = useQueryClient();
-
-  const handleRecalculate = async () => {
-    setIsRecalculating(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('recalculate-tasks');
-      
-      if (error) throw error;
-      
-      // Invalidate queries to refetch tasks
-      await queryClient.invalidateQueries({ queryKey: ['tarefas'] });
-      
-      toast({
-        title: "Tarefas recalculadas",
-        description: `${data.count} tarefa(s) foram atualizadas com sucesso.`,
-      });
-    } catch (error) {
-      console.error('Error recalculating tasks:', error);
-      toast({
-        title: "Erro ao recalcular",
-        description: "Não foi possível recalcular as tarefas. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsRecalculating(false);
-    }
-  };
   const stats = useMemo(() => {
     const byCategory = {
       fazer_agora: tarefas.filter(t => t.categoria === 'fazer_agora').length,
@@ -68,21 +36,6 @@ export const DashboardEstatisticas = ({
   };
   const filteredTarefas = selectedCategory ? tarefas.filter(t => t.categoria === selectedCategory) : [];
   return <>
-      <div className="max-w-6xl mx-auto mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Dashboard de Estatísticas</h2>
-          <Button 
-            onClick={handleRecalculate}
-            disabled={isRecalculating}
-            variant="outline"
-            className="gap-2"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRecalculating ? 'animate-spin' : ''}`} />
-            {isRecalculating ? 'Recalculando...' : 'Recalcular Tarefas'}
-          </Button>
-        </div>
-      </div>
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 max-w-6xl mx-auto">
         <Card className="bg-fazer-agora/10 border-fazer-agora cursor-pointer hover:bg-fazer-agora/20 transition-colors" onClick={() => setSelectedCategory('fazer_agora')}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

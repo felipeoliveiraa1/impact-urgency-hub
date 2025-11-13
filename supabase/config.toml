@@ -1,4 +1,1 @@
 project_id = "kyrvxikgtifklibusxwf"
-
-[functions.recalculate-tasks]
-verify_jwt = false
