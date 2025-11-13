@@ -21,13 +21,10 @@ export const useTarefas = () => {
   });
 
   const createTarefa = useMutation({
-    mutationFn: async (tarefa: Omit<Tarefa, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'impacto_norm' | 'urgencia_norm' | 'complexidade_norm' | 'risco_norm' | 'prioridade' | 'categoria' | 'linha' | 'coluna'>) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('User not authenticated');
-
+    mutationFn: async (tarefa: Omit<Tarefa, 'id' | 'created_at' | 'updated_at' | 'impacto_norm' | 'urgencia_norm' | 'complexidade_norm' | 'risco_norm' | 'prioridade' | 'categoria' | 'linha' | 'coluna'>) => {
       const { data, error } = await supabase
         .from('tarefas')
-        .insert([{ ...tarefa, user_id: user.id }])
+        .insert([tarefa])
         .select()
         .single();
       
