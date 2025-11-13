@@ -2,7 +2,7 @@ import { CellDensity } from '@/types/tarefa';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { useTarefas } from '@/hooks/useTarefas';
 import { useState } from 'react';
 import { FormularioTarefa } from './FormularioTarefa';
@@ -14,7 +14,6 @@ interface ModalTarefasProps {
 }
 
 export const ModalTarefas = ({ cell, open, onClose }: ModalTarefasProps) => {
-  const { deleteTarefa } = useTarefas();
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const getCategoryLabel = (categoria: string) => {
@@ -62,27 +61,13 @@ export const ModalTarefas = ({ cell, open, onClose }: ModalTarefasProps) => {
                     <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>
                   )}
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => setEditingId(tarefa.id)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="destructive"
-                    onClick={() => {
-                      deleteTarefa(tarefa.id);
-                      if (cell.tarefas.length === 1) {
-                        onClose();
-                      }
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() => setEditingId(tarefa.id)}
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
               </div>
 
               <div className="flex flex-wrap gap-2">
