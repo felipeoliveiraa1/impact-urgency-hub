@@ -55,10 +55,10 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
     
     /* Eisenhower Matrix Quadrants */
-    --fazer-agora: 0 84% 60%;
-    --agendar: 142 76% 36%;
-    --delegar: 45 93% 47%;
-    --eliminar: 240 5% 64%;
+    --fazer-agora: 28 100% 63%; /* Orange #FF9D42 */
+    --agendar: 210 20% 96%; /* Light gray */
+    --delegar: 210 20% 96%; /* Light gray */
+    --eliminar: 210 20% 96%; /* Light gray */
   }
 
   .dark {
@@ -99,10 +99,10 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
     
     /* Eisenhower Matrix Quadrants - Dark mode */
-    --fazer-agora: 0 72% 51%;
-    --agendar: 142 69% 30%;
-    --delegar: 45 93% 47%;
-    --eliminar: 240 4% 45%;
+    --fazer-agora: 28 100% 63%; /* Orange */
+    --agendar: 217 32% 17%; /* Dark gray */
+    --delegar: 217 32% 17%; /* Dark gray */
+    --eliminar: 217 32% 17%; /* Dark gray */
   }
 }
 

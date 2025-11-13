@@ -13,8 +13,9 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   const cellDensity = useMemo(() => {
     const density = new Map<string, CellDensity>();
     
-    for (let linha = 1; linha <= 12; linha++) {
-      for (let coluna = 1; coluna <= 12; coluna++) {
+    // Create 10x10 grid
+    for (let linha = 1; linha <= 10; linha++) {
+      for (let coluna = 1; coluna <= 10; coluna++) {
         density.set(`${linha}-${coluna}`, {
           linha,
           coluna,
@@ -24,12 +25,19 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
       }
     }
 
+    // Map database values (1-12) to grid values (1-10)
+    const mapToGrid = (value: number) => Math.min(Math.ceil(value * 10 / 12), 10);
+
     tarefas.forEach(tarefa => {
       if (tarefa.linha && tarefa.coluna) {
-        const key = `${tarefa.linha}-${tarefa.coluna}`;
-        const cell = density.get(key)!;
-        cell.count++;
-        cell.tarefas.push(tarefa);
+        const mappedLinha = mapToGrid(tarefa.linha);
+        const mappedColuna = mapToGrid(tarefa.coluna);
+        const key = `${mappedLinha}-${mappedColuna}`;
+        const cell = density.get(key);
+        if (cell) {
+          cell.count++;
+          cell.tarefas.push(tarefa);
+        }
       }
     });
 
@@ -37,9 +45,13 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   }, [tarefas]);
 
   const getQuadrant = (linha: number, coluna: number) => {
-    if (linha > 7 && coluna > 7) return 'fazer_agora';
-    if (linha <= 7 && coluna > 7) return 'agendar';
-    if (linha > 7 && coluna <= 7) return 'delegar';
+    // Q1: Upper right (Urgent & Important) - Orange
+    if (linha > 5 && coluna > 5) return 'fazer_agora';
+    // Q2: Upper left (Not Urgent & Important) - Light gray
+    if (linha > 5 && coluna <= 5) return 'agendar';
+    // Q3: Lower right (Urgent & Not Important) - Light gray
+    if (linha <= 5 && coluna > 5) return 'delegar';
+    // Q4: Lower left (Not Urgent & Not Important) - Light gray
     return 'eliminar';
   };
 
@@ -53,20 +65,20 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
 
         {/* Labels dos eixos */}
         <div className="relative">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
-            <p className="text-lg font-semibold whitespace-nowrap">Urgência (1-10) →</p>
+          <div className="absolute -left-24 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
+            <p className="text-xl font-semibold whitespace-nowrap">Urgente</p>
           </div>
           
-          <div className="mb-2 text-center">
-            <p className="text-lg font-semibold">← Impacto (1-10) →</p>
+          <div className="mb-4 text-center">
+            <p className="text-xl font-semibold">Importante</p>
           </div>
 
-          {/* Grid da matriz */}
-          <div className="relative border-[6px] border-black bg-white p-0">
-            <div className="grid grid-cols-12 gap-0">
-              {Array.from({ length: 12 }, (_, linhaIdx) => {
-                const linha = 12 - linhaIdx; // Inverte para urgência crescente de baixo para cima
-                return Array.from({ length: 12 }, (_, colunaIdx) => {
+          {/* Grid da matriz 10x10 */}
+          <div className="relative border-[6px] border-black bg-white p-0 aspect-square max-w-[800px] mx-auto">
+            <div className="grid grid-cols-10 gap-0 h-full">
+              {Array.from({ length: 10 }, (_, linhaIdx) => {
+                const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
+                return Array.from({ length: 10 }, (_, colunaIdx) => {
                   const coluna = colunaIdx + 1;
                   const key = `${linha}-${coluna}`;
                   const cell = cellDensity.get(key)!;
@@ -78,18 +90,18 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
                       cell={cell}
                       quadrant={quadrant}
                       onClick={() => setSelectedCell(cell)}
-                      isOnDivider={linha === 8 || coluna === 8}
+                      isOnDivider={linha === 6 || coluna === 6}
                     />
                   );
                 });
               })}
             </div>
             
-            {/* Linha divisória horizontal */}
-            <div className="absolute left-0 right-0 h-[3px] bg-gray-500" style={{ top: '30%' }} />
+            {/* Linha divisória horizontal - na linha 5 (divide em 50%) */}
+            <div className="absolute left-0 right-0 h-[3px] bg-gray-600" style={{ top: '50%' }} />
             
-            {/* Linha divisória vertical */}
-            <div className="absolute top-0 bottom-0 w-[3px] bg-gray-500" style={{ left: '60%' }} />
+            {/* Linha divisória vertical - na coluna 5 (divide em 50%) */}
+            <div className="absolute top-0 bottom-0 w-[3px] bg-gray-600" style={{ left: '50%' }} />
           </div>
 
           {/* Legenda dos quadrantes */}
