@@ -4,6 +4,7 @@ export interface Tarefa {
   id: string;
   titulo: string;
   descricao: string | null;
+  task_link: string | null;
   impacto: number;
   urgencia: number;
   complexidade: number;
