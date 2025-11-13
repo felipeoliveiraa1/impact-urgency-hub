@@ -65,7 +65,7 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
 
         {/* Labels dos eixos */}
         <div className="relative">
-          <div className="absolute -left-24 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
+          <div className="absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
             <p className="text-xl font-semibold whitespace-nowrap">Urgente</p>
           </div>
           
