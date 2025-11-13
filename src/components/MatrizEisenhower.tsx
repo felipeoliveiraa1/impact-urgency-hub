@@ -37,9 +37,9 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
   }, [tarefas]);
 
   const getQuadrant = (linha: number, coluna: number) => {
-    if (linha > 7 && coluna > 7) return 'fazer_agora';
-    if (linha <= 7 && coluna > 7) return 'agendar';
-    if (linha > 7 && coluna <= 7) return 'delegar';
+    if (linha > 6 && coluna > 6) return 'fazer_agora';
+    if (linha <= 6 && coluna > 6) return 'agendar';
+    if (linha > 6 && coluna <= 6) return 'delegar';
     return 'eliminar';
   };
 
