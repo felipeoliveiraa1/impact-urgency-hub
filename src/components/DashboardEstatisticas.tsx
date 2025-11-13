@@ -4,13 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertCircle, Calendar, Users, XCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+
 interface DashboardEstatisticasProps {
   tarefas: Tarefa[];
 }
+
 export const DashboardEstatisticas = ({
   tarefas
 }: DashboardEstatisticasProps) => {
   const [selectedCategory, setSelectedCategory] = useState<TaskCategory | null>(null);
+
   const stats = useMemo(() => {
     const byCategory = {
       fazer_agora: tarefas.filter(t => t.categoria === 'fazer_agora').length,
@@ -25,6 +28,7 @@ export const DashboardEstatisticas = ({
       total: tarefas.length
     };
   }, [tarefas]);
+
   const getCategoryLabel = (categoria: TaskCategory) => {
     const labels = {
       fazer_agora: 'Fazer Agora',
@@ -34,10 +38,18 @@ export const DashboardEstatisticas = ({
     };
     return labels[categoria];
   };
-  const filteredTarefas = selectedCategory ? tarefas.filter(t => t.categoria === selectedCategory) : [];
-  return <>
+
+  const filteredTarefas = selectedCategory 
+    ? tarefas.filter(t => t.categoria === selectedCategory)
+    : [];
+
+  return (
+    <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 max-w-6xl mx-auto">
-        <Card className="bg-fazer-agora/10 border-fazer-agora cursor-pointer hover:bg-fazer-agora/20 transition-colors" onClick={() => setSelectedCategory('fazer_agora')}>
+        <Card 
+          className="bg-fazer-agora/10 border-fazer-agora cursor-pointer hover:bg-fazer-agora/20 transition-colors"
+          onClick={() => setSelectedCategory('fazer_agora')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Fazer Agora</CardTitle>
             <AlertCircle className="h-4 w-4 text-fazer-agora" />
@@ -50,7 +62,10 @@ export const DashboardEstatisticas = ({
           </CardContent>
         </Card>
 
-        <Card className="bg-agendar/10 border-agendar cursor-pointer hover:bg-agendar/20 transition-colors" onClick={() => setSelectedCategory('agendar')}>
+        <Card 
+          className="bg-agendar/10 border-agendar cursor-pointer hover:bg-agendar/20 transition-colors"
+          onClick={() => setSelectedCategory('agendar')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Agendar</CardTitle>
             <Calendar className="h-4 w-4 text-agendar" />
@@ -63,7 +78,10 @@ export const DashboardEstatisticas = ({
           </CardContent>
         </Card>
 
-        <Card className="bg-delegar/10 border-delegar cursor-pointer hover:bg-delegar/20 transition-colors" onClick={() => setSelectedCategory('delegar')}>
+        <Card 
+          className="bg-delegar/10 border-delegar cursor-pointer hover:bg-delegar/20 transition-colors"
+          onClick={() => setSelectedCategory('delegar')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Delegar</CardTitle>
             <Users className="h-4 w-4 text-delegar" />
@@ -76,7 +94,10 @@ export const DashboardEstatisticas = ({
           </CardContent>
         </Card>
 
-        <Card className="bg-eliminar/10 border-eliminar cursor-pointer hover:bg-eliminar/20 transition-colors" onClick={() => setSelectedCategory('eliminar')}>
+        <Card 
+          className="bg-eliminar/10 border-eliminar cursor-pointer hover:bg-eliminar/20 transition-colors"
+          onClick={() => setSelectedCategory('eliminar')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Eliminar</CardTitle>
             <XCircle className="h-4 w-4 text-eliminar" />
@@ -90,7 +111,8 @@ export const DashboardEstatisticas = ({
         </Card>
       </div>
 
-      {selectedCategory && <Dialog open={!!selectedCategory} onOpenChange={() => setSelectedCategory(null)}>
+      {selectedCategory && (
+        <Dialog open={!!selectedCategory} onOpenChange={() => setSelectedCategory(null)}>
           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
@@ -99,10 +121,13 @@ export const DashboardEstatisticas = ({
             </DialogHeader>
 
             <div className="space-y-4">
-              {filteredTarefas.map(tarefa => <div key={tarefa.id} className="border rounded-lg p-4 space-y-2">
+              {filteredTarefas.map(tarefa => (
+                <div key={tarefa.id} className="border rounded-lg p-4 space-y-2">
                   <div>
                     <h3 className="font-semibold text-lg">{tarefa.titulo}</h3>
-                    {tarefa.descricao && <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>}
+                    {tarefa.descricao && (
+                      <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap gap-2">
@@ -124,11 +149,16 @@ export const DashboardEstatisticas = ({
                     <Badge className={`bg-${selectedCategory}`}>
                       {getCategoryLabel(selectedCategory)}
                     </Badge>
-                    
+                    <span className="text-sm text-muted-foreground">
+                      Prioridade: {tarefa.prioridade?.toFixed(2)}
+                    </span>
                   </div>
-                </div>)}
+                </div>
+              ))}
             </div>
           </DialogContent>
-        </Dialog>}
-    </>;
+        </Dialog>
+      )}
+    </>
+  );
 };
