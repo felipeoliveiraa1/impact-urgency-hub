@@ -1,11 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Tarefa, TaskCategory } from '@/types/tarefa';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Calendar, Users, XCircle, Edit } from 'lucide-react';
+import { AlertCircle, Calendar, Users, XCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { FormularioTarefa } from './FormularioTarefa';
 
 interface DashboardEstatisticasProps {
   tarefas: Tarefa[];
@@ -15,7 +13,6 @@ export const DashboardEstatisticas = ({
   tarefas
 }: DashboardEstatisticasProps) => {
   const [selectedCategory, setSelectedCategory] = useState<TaskCategory | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
 
   const stats = useMemo(() => {
     const byCategory = {
@@ -45,20 +42,6 @@ export const DashboardEstatisticas = ({
   const filteredTarefas = selectedCategory 
     ? tarefas.filter(t => t.categoria === selectedCategory)
     : [];
-
-  if (editingId) {
-    const tarefa = filteredTarefas.find(t => t.id === editingId);
-    if (tarefa) {
-      return <FormularioTarefa 
-        open={true} 
-        onClose={() => {
-          setEditingId(null);
-          setSelectedCategory(null);
-        }} 
-        tarefa={tarefa} 
-      />;
-    }
-  }
 
   return (
     <>
@@ -140,20 +123,11 @@ export const DashboardEstatisticas = ({
             <div className="space-y-4">
               {filteredTarefas.map(tarefa => (
                 <div key={tarefa.id} className="border rounded-lg p-4 space-y-2">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg">{tarefa.titulo}</h3>
-                      {tarefa.descricao && (
-                        <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>
-                      )}
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setEditingId(tarefa.id)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                  <div>
+                    <h3 className="font-semibold text-lg">{tarefa.titulo}</h3>
+                    {tarefa.descricao && (
+                      <p className="text-sm text-muted-foreground mt-1">{tarefa.descricao}</p>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap gap-2">
