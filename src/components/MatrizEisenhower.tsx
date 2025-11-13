@@ -62,25 +62,34 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
           </div>
 
           {/* Grid da matriz */}
-          <div className="grid grid-cols-10 gap-1 bg-border p-2 rounded-lg">
-            {Array.from({ length: 10 }, (_, linhaIdx) => {
-              const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
-              return Array.from({ length: 10 }, (_, colunaIdx) => {
-                const coluna = colunaIdx + 1;
-                const key = `${linha}-${coluna}`;
-                const cell = cellDensity.get(key)!;
-                const quadrant = getQuadrant(linha, coluna);
+          <div className="relative border-[6px] border-black bg-white p-0">
+            <div className="grid grid-cols-10 gap-0">
+              {Array.from({ length: 10 }, (_, linhaIdx) => {
+                const linha = 10 - linhaIdx; // Inverte para urgência crescente de baixo para cima
+                return Array.from({ length: 10 }, (_, colunaIdx) => {
+                  const coluna = colunaIdx + 1;
+                  const key = `${linha}-${coluna}`;
+                  const cell = cellDensity.get(key)!;
+                  const quadrant = getQuadrant(linha, coluna);
 
-                return (
-                  <CelulaMatriz
-                    key={key}
-                    cell={cell}
-                    quadrant={quadrant}
-                    onClick={() => setSelectedCell(cell)}
-                  />
-                );
-              });
-            })}
+                  return (
+                    <CelulaMatriz
+                      key={key}
+                      cell={cell}
+                      quadrant={quadrant}
+                      onClick={() => setSelectedCell(cell)}
+                      isOnDivider={linha === 7 || coluna === 7}
+                    />
+                  );
+                });
+              })}
+            </div>
+            
+            {/* Linha divisória horizontal */}
+            <div className="absolute left-0 right-0 h-[3px] bg-gray-500" style={{ top: '30%' }} />
+            
+            {/* Linha divisória vertical */}
+            <div className="absolute top-0 bottom-0 w-[3px] bg-gray-500" style={{ left: '60%' }} />
           </div>
 
           {/* Legenda dos quadrantes */}
