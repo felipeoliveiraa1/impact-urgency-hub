@@ -10,6 +10,11 @@ interface CelulaMatrizProps {
 
 export const CelulaMatriz = ({ cell, quadrant, onClick, isOnDivider }: CelulaMatrizProps) => {
   const getBackgroundColor = () => {
+    // Linha 6 e Coluna 6 sempre em cinza escuro
+    if (isOnDivider) {
+      return 'bg-gray-600';
+    }
+    
     if (cell.count === 0) {
       return 'bg-white';
     }
@@ -40,7 +45,10 @@ export const CelulaMatriz = ({ cell, quadrant, onClick, isOnDivider }: CelulaMat
     >
       {cell.count > 0 && (
         <>
-          <span className="absolute inset-0 flex items-center justify-center font-bold text-lg text-foreground">
+          <span className={cn(
+            "absolute inset-0 flex items-center justify-center font-bold text-lg",
+            isOnDivider ? "text-white" : "text-foreground"
+          )}>
             {cell.count}
           </span>
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
