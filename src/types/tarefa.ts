@@ -2,7 +2,6 @@ export type TaskCategory = 'fazer_agora' | 'agendar' | 'delegar' | 'eliminar';
 
 export interface Tarefa {
   id: string;
-  user_id: string;
   titulo: string;
   descricao: string | null;
   impacto: number;
