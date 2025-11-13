@@ -9,14 +9,24 @@ interface CelulaMatrizProps {
 }
 
 export const CelulaMatriz = ({ cell, quadrant, onClick, isOnDivider }: CelulaMatrizProps) => {
-  const getBackgroundColor = (count: number) => {
-    const baseColor = `bg-${quadrant}`;
+  const getBackgroundColor = () => {
+    if (cell.count === 0) {
+      // Empty cells - light background based on quadrant
+      if (quadrant === 'fazer_agora') return 'bg-fazer-agora/10';
+      return 'bg-gray-100';
+    }
     
-    if (count === 0) return baseColor;
-    if (count === 1) return `${baseColor}/40`;
-    if (count === 2) return `${baseColor}/60`;
-    if (count >= 3) return `${baseColor}/80`;
-    return baseColor;
+    // Cells with tasks - full color based on quadrant
+    if (quadrant === 'fazer_agora') {
+      if (cell.count === 1) return 'bg-fazer-agora/50';
+      if (cell.count === 2) return 'bg-fazer-agora/70';
+      return 'bg-fazer-agora/90';
+    }
+    
+    // Other quadrants use gray scale
+    if (cell.count === 1) return 'bg-gray-200';
+    if (cell.count === 2) return 'bg-gray-300';
+    return 'bg-gray-400';
   };
 
   return (
@@ -24,7 +34,7 @@ export const CelulaMatriz = ({ cell, quadrant, onClick, isOnDivider }: CelulaMat
       onClick={onClick}
       className={cn(
         'w-full h-full border border-[#E5E7EB] transition-all hover:scale-105 hover:shadow-lg relative group',
-        getBackgroundColor(cell.count),
+        getBackgroundColor(),
         cell.count > 0 && 'cursor-pointer',
         isOnDivider && 'z-10'
       )}
