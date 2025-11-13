@@ -11,9 +11,7 @@ interface CelulaMatrizProps {
 export const CelulaMatriz = ({ cell, quadrant, onClick, isOnDivider }: CelulaMatrizProps) => {
   const getBackgroundColor = () => {
     if (cell.count === 0) {
-      // Empty cells - light background based on quadrant
-      if (quadrant === 'fazer_agora') return 'bg-fazer-agora/10';
-      return 'bg-gray-100';
+      return 'bg-white';
     }
     
     // Cells with tasks - full color based on quadrant
