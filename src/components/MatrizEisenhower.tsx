@@ -25,8 +25,15 @@ export const MatrizEisenhower = ({ tarefas }: MatrizEisenhowerProps) => {
       }
     }
 
-    // Map database values (1-12) to grid values (1-10)
-    const mapToGrid = (value: number) => Math.min(Math.ceil(value * 10 / 12), 10);
+    // Map database values (1-12 skipping 6) to grid values (1-10)
+    const mapToGrid = (value: number) => {
+      if (value <= 5) return value;
+      if (value === 7) return 6;
+      if (value === 8) return 7;
+      if (value === 9) return 8;
+      if (value === 10) return 9;
+      return 10; // para valores 11 e 12
+    };
 
     tarefas.forEach(tarefa => {
       if (tarefa.linha && tarefa.coluna) {
