@@ -22,7 +22,7 @@ export const DashboardEstatisticas = ({
       total: tarefas.length
     };
   }, [tarefas]);
-  return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+  return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 max-w-6xl mx-auto">
       <Card className="bg-fazer-agora/10 border-fazer-agora">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Fazer Agora</CardTitle>
