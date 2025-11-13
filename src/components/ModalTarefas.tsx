@@ -75,9 +75,7 @@ export const ModalTarefas = ({
                 <Badge className={`bg-${tarefa.categoria}`}>
                   {tarefa.categoria && getCategoryLabel(tarefa.categoria)}
                 </Badge>
-                <span className="text-sm text-muted-foreground">
-                  Prioridade: {tarefa.prioridade?.toFixed(2)}
-                </span>
+                
               </div>
             </div>)}
         </div>
